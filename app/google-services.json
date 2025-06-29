@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "621098575609",
+    "project_id": "finance-d90ae",
+    "storage_bucket": "finance-d90ae.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:621098575609:android:9d2e221a4d68e1e443e428",
+        "android_client_info": {
+          "package_name": "com.schutell.situaofinanceira"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbfoed67m-7N6kh1q2wWLAAxju_SNAYRA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
