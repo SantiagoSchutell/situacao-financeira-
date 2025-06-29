@@ -1,6 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:app="http://schemas.android.com/apk/res-auto"
-             android:id="@+id/nav_graph">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/fragmentLogin">
 
+    <fragment
+        android:id="@+id/fragmentLogin"
+        android:name="com.schutell.situaofinanceira.fragments.FragmentLogin"
+        android:label="FragmentLogin" >
+        <action
+            android:id="@+id/action_homepage"
+            app:destination="@id/fragmentHome" />
+        <action
+            android:id="@+id/action_criarConta"
+            app:destination="@id/fragmentCriarConta" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentHome"
+        android:name="com.schutell.situaofinanceira.fragments.FragmentHome"
+        android:label="FragmentHome" />
+    <fragment
+        android:id="@+id/fragmentCriarConta"
+        android:name="com.schutell.situaofinanceira.fragments.FragmentCriarConta"
+        android:label="FragmentCriarConta" />
 </navigation>
