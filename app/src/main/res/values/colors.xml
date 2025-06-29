@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="green">#1EFF00</color>
+
+    <!--Cores principais do layout-->
+    <color name="primaria">#6699f0</color>
+    <color name="secundaria">#8fb3f3</color>
+    <color name="textoPrincipal">#1c2b41</color>
+    <color name="txt">#6a7b95</color>  <!--Para textos secundarios-->
+    <color name="acento">#4a74c9</color> <!--botoes e etc-->
+
+
+</resources>

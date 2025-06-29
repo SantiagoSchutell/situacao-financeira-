@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Situação Financeira</string>
+
+    <!--Textos Principais-->
+    <string name="bancos">Bancos</string>
+    <string name="bancos_list">Lista de Bancos:</string>
+    <string name="saldo_principal">Saldo Total</string>
+    <string name="debitos">Debitos</string>
+    <string name="saldo">Saldo</string>
+    <string name="saldo_em_conta">Saldo em Conta</string>
+    <string name="saldo_liquido">Saldo Liquido</string>
+    <string name="banco_nome">Nome do Banco</string>
+    <string name="login">Acesse sua Conta</string>
+    <string name="cadastrar">Ainda não tem uma conta?</string>
+    <string name="cadastro">criar conta</string>
+    <string name="logininstrucoes">Faça login ou cadastre a sua conta</string>
+    <string name="btnLogIn">Entrar</string>
+    <string name="email">Email</string>
+    <string name="senha">Senha</string>
+    <string name="criarConta">Faça seu Cadastro</string>
+    <string name="criarContaC">Cadastrar</string>
+
+</resources>
