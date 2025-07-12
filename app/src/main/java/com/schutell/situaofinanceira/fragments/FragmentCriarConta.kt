@@ -2,6 +2,7 @@ package com.schutell.situaofinanceira.fragments
 
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import androidx.fragment.app.Fragment
 import com.schutell.situaofinanceira.R
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.schutell.situaofinanceira.databinding.ActivityCriarcontaBinding
 
 class FragmentCriarConta: Fragment() {
@@ -19,6 +21,10 @@ class FragmentCriarConta: Fragment() {
 
     private val autenticar by lazy {
         FirebaseAuth.getInstance()
+    }
+
+    private val database by lazy {
+        FirebaseFirestore.getInstance()
     }
 
     override fun onCreateView(
@@ -37,16 +43,30 @@ class FragmentCriarConta: Fragment() {
             val email = binding.editTextCriarEmail.text.toString()
             val senha = binding.editTextCriarSenha.text.toString()
 
+
+
             if (email.isEmpty() || senha.isEmpty()){
                 Toast.makeText(requireContext(), "Você precisa digitar um email ou senha", Toast.LENGTH_SHORT).show()
             } else{
                 autenticar.createUserWithEmailAndPassword(email, senha)
                     .addOnSuccessListener { sucesso->
                         Toast.makeText(requireContext(), "Sucesso ao criar sua conta!", Toast.LENGTH_SHORT).show()
-                        autenticar.signInWithEmailAndPassword(email, senha)
-                        findNavController().navigate(R.id.action_homepage)
+                        val userId = sucesso.user?.uid
+                        if (userId != null) {
+                            val dadosUsuario = hashMapOf(
+                                "email" to email
+                            )
+                            database.collection("usuarios").document(userId)
+                                .set(dadosUsuario)
+                                .addOnSuccessListener {
+                                }
+                        }
+                        autenticar.signInWithEmailAndPassword(email, senha).addOnSuccessListener {
+                            findNavController().navigate(R.id.action_fragmentCriarConta_to_fragmentHome)
+                        }
                     }
             }
         }
     }
+
 }

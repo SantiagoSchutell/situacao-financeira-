@@ -47,6 +47,9 @@ dependencies {
     implementation("com.google.firebase:firebase-auth")
 
 
+    implementation("com.google.firebase:firebase-firestore")
+
+
 
     implementation("androidx.navigation:navigation-fragment-ktx:2.9.0")
     implementation("androidx.navigation:navigation-ui-ktx:2.9.0")

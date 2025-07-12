@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/secundaria">
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/text_adicionar"
+        android:textColor="@color/textoPrincipal"
+        android:textSize="48sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnAdicionar"
+        style="@style/Widget.Material3.Button"
+        android:layout_width="123dp"
+        android:layout_height="60dp"
+        android:backgroundTint="@color/acento"
+        android:text="@string/text_addConta"
+        android:textColor="@color/textoPrincipal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
+
+    <EditText
+        android:id="@+id/editTextNomeConta"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:backgroundTint="@color/textoPrincipal"
+        android:drawableTint="@color/textoPrincipal"
+        android:ems="10"
+        android:hint="Nome da Conta"
+        android:inputType="text"
+        android:textColor="@color/txt"
+        android:textColorHint="@color/txt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/text_tipo"
+        android:textColor="@color/textoPrincipal"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextNomeConta" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView10">
+
+        <RadioButton
+            android:id="@+id/radioBtnCorrente"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tipo_contacorretne"
+            android:textColor="@color/txt"
+            android:textColorHint="@color/txt" />
+
+        <RadioButton
+            android:id="@+id/radioBtnInvestimentos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tipo_corretora"
+            android:textColor="@color/txt"
+            android:textColorHint="@color/txt" />
+
+        <RadioButton
+            android:id="@+id/radioBtnCrypto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/txt"
+            android:drawableTint="@color/txt"
+            android:drawableTintMode="add"
+            android:foregroundTint="@color/txt"
+            android:shadowColor="@color/txt"
+            android:text="@string/tipo_crypto"
+            android:textColor="@color/txt"
+            android:textColorHighlight="@color/txt"
+            android:textColorHint="@color/txt" />
+    </RadioGroup>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

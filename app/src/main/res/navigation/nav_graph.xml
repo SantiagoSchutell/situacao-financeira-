@@ -9,18 +9,45 @@
         android:name="com.schutell.situaofinanceira.fragments.FragmentLogin"
         android:label="FragmentLogin" >
         <action
-            android:id="@+id/action_homepage"
-            app:destination="@id/fragmentHome" />
-        <action
             android:id="@+id/action_criarConta"
             app:destination="@id/fragmentCriarConta" />
+        <action
+            android:id="@+id/action_fragmentLogin_to_fragmentHome"
+            app:destination="@id/fragmentHome" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentCriarConta"
+        android:name="com.schutell.situaofinanceira.fragments.FragmentCriarConta"
+        android:label="FragmentCriarConta" >
+        <action
+            android:id="@+id/action_fragmentCriarConta_to_fragmentHome"
+            app:destination="@id/fragmentHome" />
     </fragment>
     <fragment
         android:id="@+id/fragmentHome"
         android:name="com.schutell.situaofinanceira.fragments.FragmentHome"
-        android:label="FragmentHome" />
+        android:label="FragmentHome" >
+        <action
+            android:id="@+id/action_fragment_ContasList"
+            app:destination="@id/fragmentListaDeContas" />
+    </fragment>
     <fragment
-        android:id="@+id/fragmentCriarConta"
-        android:name="com.schutell.situaofinanceira.fragments.FragmentCriarConta"
-        android:label="FragmentCriarConta" />
+        android:id="@+id/fragmentListaDeContas"
+        android:name="com.schutell.situaofinanceira.fragments.FragmentListaDeContas"
+        android:label="FragmentListaDeContas" >
+        <action
+            android:id="@+id/action_fragment_AddConta"
+            app:destination="@id/fragmentAdiconarBanco" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentAdiconarBanco"
+        android:name="com.schutell.situaofinanceira.fragments.FragmentAdiconarBanco"
+        android:label="FragmentAdiconarBanco" >
+        <action
+            android:id="@+id/action_fragment_login"
+            app:destination="@id/fragmentLogin" />
+        <action
+            android:id="@+id/action_fragmen_para_contasList"
+            app:destination="@id/fragmentListaDeContas" />
+    </fragment>
 </navigation>

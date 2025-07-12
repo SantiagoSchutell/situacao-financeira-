@@ -24,7 +24,7 @@ class FragmentLogin: Fragment() {
         val usuario = autentication.currentUser
 
         if (usuario != null){
-            findNavController().navigate(R.id.action_homepage)
+            findNavController().navigate(R.id.action_fragmentLogin_to_fragmentHome)
         } else{
             activity?.runOnUiThread {
                 Toast.makeText(requireContext(), "Faça login antes de continuar", Toast.LENGTH_SHORT).show()

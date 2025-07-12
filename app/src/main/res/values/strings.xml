@@ -19,5 +19,19 @@
     <string name="senha">Senha</string>
     <string name="criarConta">Faça seu Cadastro</string>
     <string name="criarContaC">Cadastrar</string>
+    <string name="saldoLiquidoTotal">Saldo em conta</string>
+    <string name="InvestimentosTEXT">Saldo Investido</string>
+    <string name="text_carregando">R$ 0.000,00</string>
+    <string name="text_resume">Resumo</string>
+    <string name="text_contasList">Minhas Contas</string>
+    <string name="text_adicionar">Nova Conta</string>
+    <string name="text_tipo">Tipo de conta</string>
+    <string name="tipo_corretora">Corretora de investimentos</string>
+    <string name="tipo_contacorretne">Conta corrente</string>
+    <string name="tipo_crypto">Cryptomoedas [BETA]</string>
+    <string name="text_addConta">Adicionar</string>
+    <string name="app_contas">Contas</string>
+    <string name="app_contascadastradas">Contas cadastradas</string>
+    <string name="app_navall">carregando...</string>
 
 </resources>

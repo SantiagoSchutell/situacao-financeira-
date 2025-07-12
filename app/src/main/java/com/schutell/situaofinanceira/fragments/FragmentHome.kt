@@ -28,7 +28,7 @@ class FragmentHome: Fragment(){
         val usuario = FirebaseAuth.getInstance().currentUser
 
         if (usuario != null){
-            findNavController().navigate(R.id.action_homepage)
+            findNavController().navigate(R.id.action_fragmentLogin_to_fragmentHome)
         } else{
 
             findNavController().navigate(R.id.fragmentLogin)
@@ -37,10 +37,16 @@ class FragmentHome: Fragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
         binding.btnSair.setOnClickListener {
             FirebaseAuth.getInstance().signOut()
             verificarLogin()
 
+        }
+
+        binding.btnContas.setOnClickListener {
+            findNavController().navigate(R.id.action_fragment_ContasList)
         }
     }
 }
