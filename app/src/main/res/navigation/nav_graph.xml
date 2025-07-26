@@ -38,6 +38,12 @@
         <action
             android:id="@+id/action_fragment_AddConta"
             app:destination="@id/fragmentAdiconarBanco" />
+        <action
+            android:id="@+id/action_fragmentEntrarNoBanco"
+            app:destination="@id/fragmentBanco" />
+        <action
+            android:id="@+id/action_fragmentEntrarCorretora"
+            app:destination="@id/fragmentCorretora" />
     </fragment>
     <fragment
         android:id="@+id/fragmentAdiconarBanco"
@@ -48,6 +54,47 @@
             app:destination="@id/fragmentLogin" />
         <action
             android:id="@+id/action_fragmen_para_contasList"
+            app:destination="@id/fragmentListaDeContas" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentBanco"
+        android:name="com.schutell.situaofinanceira.fragments.FragmentBanco"
+        android:label="FragmentBanco">
+    <argument
+        android:name="bancoId"
+        app:argType="string" />
+        <action
+            android:id="@+id/action_fragmentAdTranzacao"
+            app:destination="@id/fragmentTranzacao" />
+        <action
+            android:id="@+id/action_fragmentBanco_to_fragmentTranzacao"
+            app:destination="@id/fragmentTranzacao" />
+        <action
+            android:id="@+id/action_fragmentvoltarLista"
+            app:destination="@id/fragmentListaDeContas" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentTranzacao"
+        android:name="com.schutell.situaofinanceira.fragments.FragmentTranzacao"
+        android:label="FragmentTranzacao">
+    <argument
+        android:name="bancoId"
+        app:argType="string" />
+        <action
+            android:id="@+id/action_fragmentvoltarparabanco"
+            app:destination="@id/fragmentBanco"
+            app:popUpTo="@id/fragmentTranzacao"
+            app:popUpToInclusive="true"/>
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentCorretora"
+        android:name="com.schutell.situaofinanceira.fragments.FragmentCorretora"
+        android:label="FragmentCorretora" >
+        <argument
+            android:name="bancoId"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_fragmentvoltardeCorretoraParaLista"
             app:destination="@id/fragmentListaDeContas" />
     </fragment>
 </navigation>

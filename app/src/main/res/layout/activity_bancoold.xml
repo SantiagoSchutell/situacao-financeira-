@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/secundaria">
+
+    <TextView
+        android:id="@+id/textBancoNome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/app_navall"
+        android:textColor="@color/textoPrincipal"
+        android:textSize="34sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:text="@string/saldo_liquido"
+        android:textColor="@color/textoPrincipal"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textBancoNome" />
+
+    <TextView
+        android:id="@+id/textView15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:text="@string/saldo_principal"
+        android:textColor="@color/textoPrincipal"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textSaldoLiquido" />
+
+    <TextView
+        android:id="@+id/textView16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:text="@string/debitos"
+        android:textColor="@color/textoPrincipal"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textSaldo" />
+
+    <TextView
+        android:id="@+id/textSaldoLiquido"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_navall"
+        android:textColor="@color/green"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/textView14"
+        app:layout_constraintStart_toStartOf="@+id/textView14"
+        app:layout_constraintTop_toBottomOf="@+id/textView14" />
+
+    <TextView
+        android:id="@+id/textSaldo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_navall"
+        android:textColor="@color/txt"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/textView15"
+        app:layout_constraintStart_toStartOf="@+id/textView15"
+        app:layout_constraintTop_toBottomOf="@+id/textView15" />
+
+    <TextView
+        android:id="@+id/textDebitos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_navall"
+        android:textColor="@color/design_default_color_error"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/textView16"
+        app:layout_constraintStart_toStartOf="@+id/textView16"
+        app:layout_constraintTop_toBottomOf="@+id/textView16" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAddTranzacao"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="32dp"
+        android:clickable="true"
+        app:backgroundTint="@color/acento"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@android:drawable/ic_input_add" />
+
+    <ImageButton
+        android:id="@+id/btnEditDebito"
+        android:layout_width="35dp"
+        android:layout_height="31dp"
+        android:layout_marginStart="16dp"
+        android:backgroundTint="@color/acento"
+        app:layout_constraintBottom_toBottomOf="@+id/textDebitos"
+        app:layout_constraintStart_toEndOf="@+id/textDebitos"
+        app:layout_constraintTop_toBottomOf="@+id/textView16"
+        app:srcCompat="@android:drawable/ic_menu_edit" />
+
+    <ImageButton
+        android:id="@+id/btnEditDebitoOk"
+        android:layout_width="35dp"
+        android:layout_height="31dp"
+        android:backgroundTint="@color/acento"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/editTextdebito"
+        app:layout_constraintStart_toEndOf="@+id/editTextdebito"
+        app:layout_constraintTop_toTopOf="@+id/editTextdebito"
+        app:srcCompat="@android:drawable/checkbox_on_background" />
+
+    <ImageButton
+        android:id="@+id/btnEditCredito"
+        android:layout_width="35dp"
+        android:layout_height="31dp"
+        android:layout_marginStart="16dp"
+        android:backgroundTint="@color/acento"
+        app:layout_constraintBottom_toBottomOf="@+id/textSaldo"
+        app:layout_constraintStart_toEndOf="@+id/textSaldo"
+        app:layout_constraintTop_toBottomOf="@+id/textView15"
+        app:srcCompat="@android:drawable/ic_menu_edit" />
+
+    <ImageButton
+        android:id="@+id/btnEditCreditoOk"
+        android:layout_width="35dp"
+        android:layout_height="31dp"
+        android:backgroundTint="@color/acento"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/editTextCredito"
+        app:layout_constraintStart_toEndOf="@+id/editTextCredito"
+        app:layout_constraintTop_toTopOf="@+id/editTextCredito"
+        app:srcCompat="@android:drawable/checkbox_on_background"
+        tools:visibility="invisible" />
+
+    <EditText
+        android:id="@+id/editTextCredito"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/txt"
+        android:drawableTint="@color/txt"
+        android:ems="10"
+        android:foregroundTint="@color/txt"
+        android:hint="R$"
+        android:inputType="numberDecimal"
+        android:textColor="@color/txt"
+        android:textColorHighlight="@color/txt"
+        android:textColorHint="@color/txt"
+        android:textColorLink="@color/txt"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/textSaldo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView15"
+        tools:visibility="invisible" />
+
+    <EditText
+        android:id="@+id/editTextdebito"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="R$"
+        android:inputType="numberDecimal"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/textDebitos"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView16"
+        tools:visibility="invisible" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

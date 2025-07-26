@@ -3,13 +3,16 @@ package com.schutell.situaofinanceira
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Adapter
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.schutell.situaofinanceira.ContaAdapter.ContasViewHolder
 
-class ContaAdapter(private val lista: List<String>) : RecyclerView.Adapter<ContasViewHolder>(){
+interface OnContaClicada{
+    fun OnContaClicada(nomeDoBanco: String)
+}
+
+class ContaAdapter(private val lista: List<String>, private val listener: OnContaClicada) : RecyclerView.Adapter<ContasViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContasViewHolder {
 
@@ -38,8 +41,17 @@ class ContaAdapter(private val lista: List<String>) : RecyclerView.Adapter<Conta
     ) : RecyclerView.ViewHolder(itemview) {
          val textname: TextView = itemview.findViewById(R.id.textNomeDaConta)
 
-        //Adicionar a Imagem do btn
-         val ico: ImageButton = itemview.findViewById(R.id.btnConta)
+         val detalhesBotao: ImageButton = itemview.findViewById(R.id.btnConta)
+
+        init {
+            detalhesBotao.setOnClickListener {
+                val position = adapterPosition
+                if(position != RecyclerView.NO_POSITION){
+                    val botaoClicado = lista[position]
+                    listener.OnContaClicada(botaoClicado)
+                }
+            }
+        }
 
     }
 

@@ -13,11 +13,12 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.schutell.situaofinanceira.ContaAdapter
+import com.schutell.situaofinanceira.OnContaClicada
 import com.schutell.situaofinanceira.R
 import com.schutell.situaofinanceira.databinding.ActivityListadecontasBinding
 
 
-class FragmentListaDeContas: Fragment() {
+class FragmentListaDeContas: Fragment(), OnContaClicada {
     private var _binding: ActivityListadecontasBinding? = null
     private val binding get() = _binding!!
 
@@ -56,7 +57,8 @@ class FragmentListaDeContas: Fragment() {
                     lista.add(document.id)
                 }
 
-                binding.recycleContas.adapter = ContaAdapter(lista)
+
+                binding.recycleContas.adapter = ContaAdapter(lista, this)
                 binding.recycleContas.layoutManager = LinearLayoutManager(requireContext())
 
             }
@@ -79,4 +81,34 @@ class FragmentListaDeContas: Fragment() {
 
     }
 
+    override fun OnContaClicada(nomeDoBanco: String) {
+
+
+        val docRef = data
+            .collection("usuarios")
+            .document(user.uid.toString())
+            .collection("bancos")
+            .document(nomeDoBanco)
+            .get()
+
+        docRef.addOnSuccessListener { dados ->
+            if (dados != null && dados.exists()) {
+                val tipoDaConta = dados.getDouble("tipoDeConta")
+
+
+                if (tipoDaConta?.toInt() == 2131231140){
+                    val acao = FragmentListaDeContasDirections.actionFragmentEntrarNoBanco(nomeDoBanco)
+
+                    findNavController().navigate(acao)
+                }
+
+                if (tipoDaConta?.toInt() == 2131231142){
+                    val acao = FragmentListaDeContasDirections.actionFragmentEntrarCorretora(nomeDoBanco)
+
+                    findNavController().navigate(acao)
+                }
+
+            }
+        }
+    }
 }

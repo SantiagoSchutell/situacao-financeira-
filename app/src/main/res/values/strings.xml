@@ -33,5 +33,18 @@
     <string name="app_contas">Contas</string>
     <string name="app_contascadastradas">Contas cadastradas</string>
     <string name="app_navall">carregando...</string>
+    <string name="trazacao">Adicionar Transação</string>
+    <string name="namedescription">Nome da transação</string>
+    <string name="valordecription">Valor R$</string>
+    <string name="credito">Credito</string>
+
+
+    <string name="saldoTotalInvestido">Salto total investido</string>
+    <string name="acoes">Ações</string>
+    <string name="fiis">Fundos Imobiliários</string>
+    <string name="rendFix">Renda Fixa</string>
+    <string name="proventos">Proventos</string>
+    <string name="contadeInvestimentos">Conta de Investimentos</string>
+
 
 </resources>
