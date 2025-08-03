@@ -50,7 +50,7 @@ class FragmentTranzacao : Fragment() {
 
             docRef.addOnSuccessListener { dados ->
                 if (dados != null && dados.exists()) {
-                    val novoValor = binding.editTextValor.text.toString().toDouble()
+                    val novoValor = binding.editTextValor.text.toString().replace(",", ".").toDouble()
                     val credito = dados.getDouble("credito")!!.toDouble()
 
                     val total = credito + novoValor
@@ -93,7 +93,7 @@ class FragmentTranzacao : Fragment() {
 
             docRef.addOnSuccessListener { dados ->
                 if (dados != null && dados.exists()) {
-                    val novoValor = binding.editTextValor.text.toString().toDouble()
+                    val novoValor = binding.editTextValor.text.toString().replace(",", ".").toDouble()
                     val credito = dados.getDouble("credito")!!.toDouble()
                     val debito = dados.getDouble("debito")!!.toDouble()
 

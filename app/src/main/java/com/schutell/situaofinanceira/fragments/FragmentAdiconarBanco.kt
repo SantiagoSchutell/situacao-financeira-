@@ -46,49 +46,88 @@ class FragmentAdiconarBanco : Fragment() {
     }
 
     private fun adicionarNovaConta() {
-        if (binding.editTextNomeConta.text != null && binding.radioGroup.checkedRadioButtonId != -1) {
-            var nomeDoBanco = binding.editTextNomeConta.text.toString()
-            var tipo = binding.radioGroup.checkedRadioButtonId
+        if (binding.editTextNomeConta.text.isNullOrBlank()) {
+            Toast.makeText(
+                requireContext(),
+                "Por favor, insira o nome da conta.",
+                Toast.LENGTH_SHORT
+            ).show()
+            return
+        }
 
-            //Banco
-            if (tipo == 2131231140) {
+
+        if (binding.radioGroup.checkedRadioButtonId == -1) {
+            Toast.makeText(
+                requireContext(),
+                "Por favor, selecione o tipo de conta.",
+                Toast.LENGTH_SHORT
+            ).show()
+            return
+        }
+
+        val userID = autenticar.currentUser?.uid
+
+        if (userID == null) {
+            Toast.makeText(requireContext(), "Erro: Usuário não autenticado.", Toast.LENGTH_SHORT)
+                .show()
+            findNavController().navigate(R.id.action_fragment_login)
+            return
+        }
+
+
+        val nomeDoBanco = binding.editTextNomeConta.text.toString()
+        val tipo = binding.radioGroup.checkedRadioButtonId
+        val urlDaIamgem = ""
+
+
+        when (tipo) {
+
+            //banco
+            R.id.radioBtnCorrente -> {
+
                 val dados = mapOf(
                     "nome" to nomeDoBanco,
+                    "imageUrl" to urlDaIamgem,
                     "credito" to 0,
                     "debito" to 0,
                     "tipoDeConta" to tipo
                 )
 
-                if (autenticar.currentUser != null) {
+                var userID = autenticar.currentUser?.uid.toString()
 
+                data.collection("usuarios")
+                    .document(userID)
+                    .collection("bancos")
+                    .document(nomeDoBanco)
+                    .set(dados)
 
-                    var userID = autenticar.currentUser?.uid.toString()
-                    data.collection("usuarios")
-                        .document(userID)
-                        .collection("bancos")
-                        .document(nomeDoBanco)
-                        .set(dados)
-
-                        .addOnSuccessListener { ok ->
-                            Toast.makeText(
-                                requireContext(),
-                                "Sucesso ao Adicionar!",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            findNavController().navigate(R.id.action_fragmen_para_contasList)
-                        }
-                } else {
-                    findNavController().navigate(R.id.action_fragment_login)
-                }
+                    .addOnSuccessListener { ok ->
+                        Toast.makeText(
+                            requireContext(),
+                            "Sucesso ao Adicionar!",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        findNavController().navigate(R.id.action_fragmen_para_contasList)
+                    }
+                    .addOnFailureListener { erro ->
+                        Toast.makeText(
+                            requireContext(),
+                            "Erro ao salvar! ${erro.message}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
 
             }
 
+
             //Corretora
-            if (tipo == 2131231142){
+            R.id.radioBtnInvestimentos -> {
+
 
                 val dados = mapOf(
                     "nome" to nomeDoBanco,
                     "tipoDeConta" to tipo,
+                    "imageUrl" to urlDaIamgem,
                     "acoes" to 0,
                     "fiis" to 0,
                     "rendaFixa" to 0,
@@ -115,13 +154,21 @@ class FragmentAdiconarBanco : Fragment() {
                             ).show()
                             findNavController().navigate(R.id.action_fragmen_para_contasList)
                         }
+                        .addOnFailureListener { erro ->
+                            Toast.makeText(
+                                requireContext(),
+                                "Erro ao salvar! ${erro.message}",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
                 } else {
                     findNavController().navigate(R.id.action_fragment_login)
                 }
             }
 
+
         }
     }
-
 }
+
 

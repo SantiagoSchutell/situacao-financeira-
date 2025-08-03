@@ -52,26 +52,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
-    <EditText
-        android:id="@+id/editTextSenha"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:backgroundTint="@color/txt"
-        android:ems="10"
-        android:hint="@string/senha"
-        android:inputType="textPassword"
-        android:minHeight="48dp"
-        android:shadowColor="@color/txt"
-        android:textColor="@color/txt"
-        android:textColorHighlight="@color/txt"
-        android:textColorHint="@color/txt"
-        android:textColorLink="@color/txt"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextEmail" />
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/btnLogIn"
@@ -96,25 +81,49 @@
         android:textColorLink="@color/txt"
         android:textSize="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btnCriarConta"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnLogIn"
         app:layout_constraintVertical_bias="0.0" />
 
-    <Button
+    <EditText
+        android:id="@+id/editTextSenha"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:backgroundTint="@color/txt"
+        android:ems="10"
+        android:hint="@string/senha"
+        android:inputType="textPassword"
+        android:minHeight="48dp"
+        android:shadowColor="@color/txt"
+        android:textColor="@color/txt"
+        android:textColorHighlight="@color/txt"
+
+        android:textColorHint="@color/txt"
+        android:textColorLink="@color/txt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextEmail" />
+
+    <TextView
         android:id="@+id/btnCriarConta"
-        style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
-        android:layout_width="126dp"
-        android:layout_height="44dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="28dp"
         android:text="@string/cadastro"
-        android:textAlignment="textStart"
-        android:textAllCaps="false"
-        android:textColor="@color/textoPrincipal"
+        android:textColor="@color/acento"
         android:textColorLink="@color/txt"
         android:textSize="15dp"
-        android:textStyle="bold|italic"
-        app:iconGravity="start"
-        app:iconSize="1dp"
         app:layout_constraintBottom_toBottomOf="@+id/textView4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/textView4"
-        app:layout_constraintTop_toTopOf="@+id/textView4" />
+        app:layout_constraintTop_toTopOf="@+id/textView4"
+        app:layout_constraintVertical_bias="0.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>

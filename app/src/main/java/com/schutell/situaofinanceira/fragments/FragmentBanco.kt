@@ -73,7 +73,7 @@ class FragmentBanco : Fragment() {
             binding.textSaldo.visibility = VISIBLE
 
             if (binding.editTextCredito.text.isNotEmpty()) {
-                val valor = binding.editTextCredito.text.toString().toDouble()
+                val valor = binding.editTextCredito.text.toString().replace(",", ".").toDouble()
                 editarValor(valor, idDaConta, "credito")
                 carregarDadosConta(idDaConta)
 
@@ -95,7 +95,7 @@ class FragmentBanco : Fragment() {
             binding.textDebitos.visibility = VISIBLE
 
             if (binding.editTextdebito.text.isNotEmpty()) {
-                val valor = binding.editTextdebito.text.toString().toDouble()
+                val valor = binding.editTextdebito.text.toString().replace(",", ".").toDouble()
                 editarValor(valor, idDaConta, "debito")
                 carregarDadosConta(idDaConta)
 

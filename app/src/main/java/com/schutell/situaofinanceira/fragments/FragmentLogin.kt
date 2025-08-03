@@ -58,6 +58,7 @@ class FragmentLogin: Fragment() {
             val email = binding.editTextEmail.text.toString()
             val senha = binding.editTextSenha.text.toString()
 
+
             if (email.isEmpty() || senha.isEmpty()){
                 Toast.makeText(requireContext(), "O email e senha não podem estar vazio!", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener

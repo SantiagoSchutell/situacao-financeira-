@@ -3,12 +3,16 @@ package com.schutell.situaofinanceira.fragments
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.schutell.situaofinanceira.databinding.ActivityCorretoraBinding
+import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.util.Locale
 import kotlin.getValue
@@ -44,7 +48,124 @@ class FragmentCorretora :  Fragment() {
 
         carregarDadosConta(idDaConta)
 
+
+        ///Editar Ação
+        binding.btnEditAcao.setOnClickListener {
+            binding.btnEditAcao.visibility = INVISIBLE
+            binding.editTextAcoes.visibility = VISIBLE
+            binding.btnEdiAcaoOk.visibility = VISIBLE
+            binding.textAcoes.visibility = INVISIBLE
+
+        }
+        binding.btnEdiAcaoOk.setOnClickListener {
+            binding.btnEditAcao.visibility = VISIBLE
+            binding.editTextAcoes.visibility = INVISIBLE
+            binding.btnEdiAcaoOk.visibility = INVISIBLE
+            binding.textAcoes.visibility = VISIBLE
+
+            if (binding.editTextAcoes.text.isNotEmpty()) {
+                val valor = binding.editTextAcoes.text.toString().replace(",", ".").toDouble()
+                editarValor(valor, idDaConta, "acoes")
+                carregarDadosConta(idDaConta)
+
+            }
+        }
+
+
+
+        //Editar Fiis
+        binding.btnEditFiis.setOnClickListener {
+            binding.btnEditFiis.visibility = INVISIBLE
+            binding.editTextFiis.visibility = VISIBLE
+            binding.btnEdifiisOK.visibility = VISIBLE
+            binding.textFiis.visibility = INVISIBLE
+
+        }
+        binding.btnEdifiisOK.setOnClickListener {
+            binding.btnEditFiis.visibility = VISIBLE
+            binding.editTextFiis.visibility = INVISIBLE
+            binding.btnEdifiisOK.visibility = INVISIBLE
+            binding.textFiis.visibility = VISIBLE
+
+            if (binding.editTextFiis.text.isNotEmpty()) {
+                val valor = binding.editTextFiis.text.toString().replace(",", ".").toDouble()
+                editarValor(valor, idDaConta, "fiis")
+                carregarDadosConta(idDaConta)
+
+            }
+        }
+
+
+        //editar Renda Fixa
+        binding.btnEdiRendFix.setOnClickListener {
+            binding.btnEdiRendFix.visibility = INVISIBLE
+            binding.editTextRendaFixa.visibility = VISIBLE
+            binding.btnEditRendaFixOK.visibility = VISIBLE
+            binding.textRendaFixa.visibility = INVISIBLE
+
+        }
+        binding.btnEditRendaFixOK.setOnClickListener {
+            binding.btnEdiRendFix.visibility = VISIBLE
+            binding.editTextRendaFixa.visibility = INVISIBLE
+            binding.btnEditRendaFixOK.visibility = INVISIBLE
+            binding.textRendaFixa.visibility = VISIBLE
+
+            if (binding.editTextRendaFixa.text.isNotEmpty()) {
+                val valor = binding.editTextRendaFixa.text.toString().replace(",", ".").toDouble()
+                editarValor(valor, idDaConta, "rendaFixa")
+                carregarDadosConta(idDaConta)
+
+            }
+        }
+
+
+
+        //Editar Proventos
+        binding.btnEdiProventos.setOnClickListener {
+            binding.btnEdiProventos.visibility = INVISIBLE
+            binding.editTextProventos.visibility = VISIBLE
+            binding.btnEditProventosOK.visibility = VISIBLE
+            binding.textProventos.visibility = INVISIBLE
+
+        }
+        binding.btnEditProventosOK.setOnClickListener {
+            binding.btnEdiProventos.visibility = VISIBLE
+            binding.editTextProventos.visibility = INVISIBLE
+            binding.btnEditProventosOK.visibility = INVISIBLE
+            binding.textProventos.visibility = VISIBLE
+
+            if (binding.editTextProventos.text.isNotEmpty()) {
+                val valor = binding.editTextProventos.text.toString().replace(",", ".").toDouble()
+                editarValor(valor, idDaConta, "proventos")
+                carregarDadosConta(idDaConta)
+
+            }
+        }
+
+        //Editar Conta de investimentos
+        binding.btnEdiContaDeInvestimentos.setOnClickListener {
+            binding.btnEdiContaDeInvestimentos.visibility = INVISIBLE
+            binding.editTextContaDeInvestimentos.visibility = VISIBLE
+            binding.btnEditContaDeInvestmentosOK.visibility = VISIBLE
+            binding.textContaDeInvestimentos.visibility = INVISIBLE
+
+        }
+        binding.btnEditContaDeInvestmentosOK.setOnClickListener {
+            binding.btnEdiContaDeInvestimentos.visibility = VISIBLE
+            binding.editTextContaDeInvestimentos.visibility = INVISIBLE
+            binding.btnEditContaDeInvestmentosOK.visibility = INVISIBLE
+            binding.textContaDeInvestimentos.visibility = VISIBLE
+
+            if (binding.editTextContaDeInvestimentos.text.isNotEmpty()) {
+                val valor = binding.editTextContaDeInvestimentos.text.toString().replace(",", ".").toDouble()
+                editarValor(valor, idDaConta, "contaDeInvestimentos")
+               carregarDadosConta(idDaConta)
+
+            }
+        }
+
     }
+
 
     private fun carregarDadosConta(bancoId: String) {
         val docRef = data

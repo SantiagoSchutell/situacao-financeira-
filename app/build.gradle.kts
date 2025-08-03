@@ -42,7 +42,11 @@ android {
 }
 
 dependencies {
+
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+
     implementation ("com.google.android.material:material:1.12.0")
+    implementation("com.google.android.material:material:1.11.0")
 
     //Firebase
     implementation(platform("com.google.firebase:firebase-bom:33.16.0"))

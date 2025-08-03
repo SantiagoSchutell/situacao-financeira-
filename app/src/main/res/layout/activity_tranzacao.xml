@@ -27,7 +27,7 @@
         android:backgroundTint="@color/textoPrincipal"
         android:ems="10"
         android:hint="@string/valordecription"
-        android:inputType="text"
+        android:inputType="number|numberDecimal|numberSigned"
         android:textColor="@color/textoPrincipal"
         android:textColorHint="@color/textoPrincipal"
         app:layout_constraintEnd_toEndOf="parent"

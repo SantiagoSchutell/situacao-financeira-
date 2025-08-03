@@ -6,13 +6,14 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.schutell.situaofinanceira.ContaAdapter.ContasViewHolder
 
 interface OnContaClicada{
     fun OnContaClicada(nomeDoBanco: String)
 }
 
-class ContaAdapter(private val lista: List<String>, private val listener: OnContaClicada) : RecyclerView.Adapter<ContasViewHolder>(){
+class ContaAdapter(private val lista: List<Banco>, private val listener: OnContaClicada) : RecyclerView.Adapter<ContasViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContasViewHolder {
 
@@ -25,9 +26,15 @@ class ContaAdapter(private val lista: List<String>, private val listener: OnCont
 
     override fun onBindViewHolder(contasViewHolder: ContasViewHolder, position: Int) {
 
-        val nome = lista[position]
-        contasViewHolder.textname.text = nome
+        val banco = lista[position]
 
+        contasViewHolder.textname.text = banco.nome
+
+        Glide.with(contasViewHolder.itemview.context)
+            .load(banco.imageUrl)
+            .placeholder(R.drawable.bank)
+            .error(R.drawable.bank)
+            .into(contasViewHolder.imageButton)
 
 
     }
@@ -41,14 +48,14 @@ class ContaAdapter(private val lista: List<String>, private val listener: OnCont
     ) : RecyclerView.ViewHolder(itemview) {
          val textname: TextView = itemview.findViewById(R.id.textNomeDaConta)
 
-         val detalhesBotao: ImageButton = itemview.findViewById(R.id.btnConta)
+         val imageButton: ImageButton = itemview.findViewById(R.id.btnConta)
 
         init {
-            detalhesBotao.setOnClickListener {
+            imageButton.setOnClickListener {
                 val position = adapterPosition
                 if(position != RecyclerView.NO_POSITION){
                     val botaoClicado = lista[position]
-                    listener.OnContaClicada(botaoClicado)
+                    listener.OnContaClicada(botaoClicado.nome)
                 }
             }
         }
