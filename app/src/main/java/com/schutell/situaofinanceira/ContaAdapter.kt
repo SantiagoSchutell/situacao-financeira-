@@ -28,6 +28,7 @@ class ContaAdapter(private val lista: List<Banco>, private val listener: OnConta
 
         val banco = lista[position]
 
+
         contasViewHolder.textname.text = banco.nome
 
         Glide.with(contasViewHolder.itemview.context)
@@ -35,7 +36,6 @@ class ContaAdapter(private val lista: List<Banco>, private val listener: OnConta
             .placeholder(R.drawable.bank)
             .error(R.drawable.bank)
             .into(contasViewHolder.imageButton)
-
 
     }
 

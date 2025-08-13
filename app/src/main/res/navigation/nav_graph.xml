@@ -44,6 +44,12 @@
         <action
             android:id="@+id/action_fragmentEntrarCorretora"
             app:destination="@id/fragmentCorretora" />
+        <action
+            android:id="@+id/action_fragmentListaDeContas_to_fragmentLogin"
+            app:destination="@id/fragmentLogin" />
+        <action
+            android:id="@+id/action_fragmentListaDeContas_self"
+            app:destination="@id/fragmentListaDeContas" />
     </fragment>
     <fragment
         android:id="@+id/fragmentAdiconarBanco"

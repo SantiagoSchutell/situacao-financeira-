@@ -86,7 +86,7 @@ class FragmentListaDeContas: Fragment(), OnContaClicada {
             if (FirebaseAuth.getInstance().currentUser != null){
                 findNavController().navigate(R.id.action_fragment_AddConta)
             }else{
-                findNavController().navigate(R.id.action_fragment_login)
+                findNavController().navigate(R.id.action_fragmentListaDeContas_to_fragmentLogin)
             }
         }
 

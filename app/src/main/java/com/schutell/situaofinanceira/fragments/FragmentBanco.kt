@@ -2,17 +2,21 @@ package com.schutell.situaofinanceira.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.schutell.situaofinanceira.OnContaClicada
 import com.schutell.situaofinanceira.R
 import com.schutell.situaofinanceira.databinding.ActivityBancoBinding
 import java.text.NumberFormat
@@ -42,14 +46,13 @@ class FragmentBanco : Fragment() {
 
     }
 
-    private val ContaName = ""
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val idDaConta = args.bancoId
 
-
         carregarDadosConta(idDaConta)
+        inicializarMenuItems()
 
         binding.fabAddTranzacao.setOnClickListener {
             val idDaContaParaEnviar = args.bancoId
@@ -105,6 +108,42 @@ class FragmentBanco : Fragment() {
 
     }
 
+    private fun inicializarMenuItems() {
+
+        requireActivity().addMenuProvider(
+            object : MenuProvider {
+                override fun onCreateMenu(
+                    menu: Menu,
+                    menuInflater: MenuInflater
+                ) {
+                    menuInflater.inflate(R.menu.menucontas, menu)
+                }
+
+                override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                    when (menuItem.itemId) {
+                        R.id.item_editar -> {
+                            Toast.makeText(
+                                requireContext(),
+                                "Clicado em editar",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+
+                        R.id.item_excluir -> {
+                            Toast.makeText(
+                                requireContext(),
+                                "Clicado em Excluir",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+                    return true
+                }
+
+            }
+        )
+    }
+
     private fun carregarDadosConta(bancoId: String) {
         val docRef = data
             .collection("usuarios")
@@ -121,7 +160,6 @@ class FragmentBanco : Fragment() {
                 val credito = dados.getDouble("credito")
                 val debito = dados.getDouble("debito")
 
-                binding.textBancoNome.text = nome.toString();
                 binding.textSaldo.text = formatarParaDinheiro(credito).toString();
                 binding.textDebitos.text = formatarParaDinheiro(debito).toString();
 
@@ -130,13 +168,23 @@ class FragmentBanco : Fragment() {
                     val saldoLiq = credito.toDouble() - debito.toDouble()
                     binding.textSaldoLiquido.text = formatarParaDinheiro(saldoLiq).toString()
                 }
-                } else {
-                    Toast.makeText(requireContext(), "Erro ao buscar dados!", Toast.LENGTH_SHORT)
-                        .show()
-                }
 
+                //Tool bar
+                val toolBar = binding.toolBar.toolbarPrincipal
+                toolBar.setTitleTextAppearance(requireContext(), R.style.ToolbarTitleStyle)
+
+                (activity as AppCompatActivity).setSupportActionBar(toolBar)
+                (activity as AppCompatActivity).supportActionBar?.apply {
+                    title = nome.toString()
+
+                }
+            } else {
+                Toast.makeText(requireContext(), "Erro ao buscar dados!", Toast.LENGTH_SHORT)
+                    .show()
             }
+
         }
+    }
 
     private fun formatarParaDinheiro(valor: Double?): String {
         val formatar = NumberFormat.getCurrencyInstance(Locale("pt", "BR"))

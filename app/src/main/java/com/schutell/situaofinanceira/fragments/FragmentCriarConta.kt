@@ -12,6 +12,7 @@ import com.schutell.situaofinanceira.R
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import com.schutell.situaofinanceira.databinding.ActivityCriarcontaBinding
 
 class FragmentCriarConta: Fragment() {
@@ -26,6 +27,7 @@ class FragmentCriarConta: Fragment() {
     private val database by lazy {
         FirebaseFirestore.getInstance()
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -60,6 +62,7 @@ class FragmentCriarConta: Fragment() {
                                 .set(dadosUsuario)
                                 .addOnSuccessListener {
                                 }
+
                         }
                         autenticar.signInWithEmailAndPassword(email, senha).addOnSuccessListener {
                             findNavController().navigate(R.id.action_fragmentCriarConta_to_fragmentHome)

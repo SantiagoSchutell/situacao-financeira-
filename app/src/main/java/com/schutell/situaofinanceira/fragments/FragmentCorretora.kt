@@ -31,8 +31,6 @@ class FragmentCorretora :  Fragment() {
         FirebaseAuth.getInstance()
     }
 
-    private val ContaName = ""
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -187,6 +185,7 @@ class FragmentCorretora :  Fragment() {
                 val proventos = dados.getDouble("proventos")
                 val contaDeInvestimentos = dados.getDouble("contaDeInvestimentos")
 
+
                 val totalValor =
                     acoes!! + fiis!! + rendaFixa!! + proventos!! + contaDeInvestimentos!!
 
@@ -200,9 +199,16 @@ class FragmentCorretora :  Fragment() {
                 binding.textContaDeInvestimentos.text = formatarParaDinheiro(contaDeInvestimentos)
 
 
+
+                val docRefUp = data
+                    .collection("usuarios")
+                    .document(user.uid.toString())
+                    .collection("bancos")
+                    .document(bancoId)
+
+                docRefUp.update("valorTotal", totalValor)
             }
         }
-
     }
 
     private fun formatarParaDinheiro(valor: Double?): String {
