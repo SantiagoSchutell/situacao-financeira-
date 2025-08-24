@@ -10,7 +10,7 @@ import com.bumptech.glide.Glide
 import com.schutell.situaofinanceira.ContaAdapter.ContasViewHolder
 
 interface OnContaClicada{
-    fun OnContaClicada(nomeDoBanco: String)
+    fun OnContaClicada(idbanco: String)
 }
 
 class ContaAdapter(private val lista: List<Banco>, private val listener: OnContaClicada) : RecyclerView.Adapter<ContasViewHolder>(){
@@ -53,9 +53,10 @@ class ContaAdapter(private val lista: List<Banco>, private val listener: OnConta
         init {
             imageButton.setOnClickListener {
                 val position = adapterPosition
+
                 if(position != RecyclerView.NO_POSITION){
                     val botaoClicado = lista[position]
-                    listener.OnContaClicada(botaoClicado.nome)
+                    listener.OnContaClicada(botaoClicado.idBanco)
                 }
             }
         }

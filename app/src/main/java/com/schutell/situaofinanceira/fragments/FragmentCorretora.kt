@@ -2,15 +2,24 @@ package com.schutell.situaofinanceira.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
+import com.schutell.situaofinanceira.R
 import com.schutell.situaofinanceira.databinding.ActivityCorretoraBinding
 import java.text.DecimalFormat
 import java.text.NumberFormat
@@ -31,6 +40,12 @@ class FragmentCorretora :  Fragment() {
         FirebaseAuth.getInstance()
     }
 
+    private val storage by lazy {
+        FirebaseStorage.getInstance()
+    }
+
+    private val userID = user.currentUser?.uid.toString()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -45,6 +60,7 @@ class FragmentCorretora :  Fragment() {
         val idDaConta = args.bancoId
 
         carregarDadosConta(idDaConta)
+        inicializarMenuItems()
 
 
         ///Editar Ação
@@ -175,22 +191,20 @@ class FragmentCorretora :  Fragment() {
 
         docRef.addOnSuccessListener { dados ->
             if (dados != null && dados.exists()) {
-                val tipoDaConta = dados.getDouble("tipoDeConta")
-
 
                 val nome = dados.get("nome")
-                val acoes = dados.getDouble("acoes")
-                val fiis = dados.getDouble("fiis")
-                val rendaFixa = dados.getDouble("rendaFixa")
-                val proventos = dados.getDouble("proventos")
-                val contaDeInvestimentos = dados.getDouble("contaDeInvestimentos")
+                val acoes = dados.getDouble("acoes") ?: 0.0
+                val fiis = dados.getDouble("fiis") ?: 0.0
+                val rendaFixa = dados.getDouble("rendaFixa") ?: 0.0
+                val proventos = dados.getDouble("proventos") ?: 0.0
+                val contaDeInvestimentos = dados.getDouble("contaDeInvestimentos") ?: 0.0
 
 
                 val totalValor =
-                    acoes!! + fiis!! + rendaFixa!! + proventos!! + contaDeInvestimentos!!
+                    acoes + fiis + rendaFixa+ proventos + contaDeInvestimentos
 
 
-                binding.textBancoNome.text = nome.toString()
+
                 binding.textSaldoTotalInvestido.text = formatarParaDinheiro(totalValor)
                 binding.textAcoes.text = formatarParaDinheiro(acoes)
                 binding.textFiis.text = formatarParaDinheiro(fiis)
@@ -207,6 +221,16 @@ class FragmentCorretora :  Fragment() {
                     .document(bancoId)
 
                 docRefUp.update("valorTotal", totalValor)
+
+                //Tool bar
+                val toolBar = binding.toolbarCorretora.toolbarPrincipal
+                toolBar.setTitleTextAppearance(requireContext(), R.style.ToolbarTitleStyle)
+
+                (activity as AppCompatActivity).setSupportActionBar(toolBar)
+                (activity as AppCompatActivity).supportActionBar?.apply {
+                    title = nome.toString()
+
+                }
             }
         }
     }
@@ -224,6 +248,63 @@ class FragmentCorretora :  Fragment() {
             .document(bancoId)
 
         docRef.update(tipo, valor)
+    }
+
+    private fun inicializarMenuItems() {
+
+        requireActivity().addMenuProvider(
+            object : MenuProvider {
+                override fun onCreateMenu(
+                    menu: Menu,
+                    menuInflater: MenuInflater
+                ) {
+                    menu.clear()
+                    menuInflater.inflate(R.menu.menucontas, menu)
+
+                }
+
+                override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                    when (menuItem.itemId) {
+                        R.id.item_editar -> {
+
+                            findNavController().navigate(FragmentCorretoraDirections.actionCorretoraParaEditar(args.bancoId))
+                            return true
+                        }
+
+                        R.id.item_excluir -> {
+
+                            val getName = data.collection("usuarios")
+                                .document(user.uid.toString())
+                                .collection("bancos")
+                                .document(args.bancoId)
+                                .get().addOnSuccessListener { nameGet->
+                                    val nomeDoBanco = nameGet.get("nome")
+                                    val imageStorage = storage.reference.child("$userID/bank_logo_$nomeDoBanco.jpg")
+                                    imageStorage.delete()
+                                        .addOnSuccessListener {
+                                            data.collection("usuarios")
+                                                .document(user.uid.toString())
+                                                .collection("bancos")
+                                                .document(args.bancoId)
+                                                .delete().addOnSuccessListener {ok->
+                                                    findNavController().navigate(FragmentBancoDirections.actionFragmentvoltarLista())
+                                                    Toast.makeText(requireContext(), "Sucesso ao remover conta!", Toast.LENGTH_SHORT).show()
+
+                                                }
+                                        }
+                                }
+
+
+                            return true
+                        }
+                    }
+                    return false
+                }
+
+            },
+            viewLifecycleOwner,
+            Lifecycle.State.RESUMED
+        )
     }
 
 }

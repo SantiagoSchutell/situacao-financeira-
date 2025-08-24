@@ -47,9 +47,6 @@
         <action
             android:id="@+id/action_fragmentListaDeContas_to_fragmentLogin"
             app:destination="@id/fragmentLogin" />
-        <action
-            android:id="@+id/action_fragmentListaDeContas_self"
-            app:destination="@id/fragmentListaDeContas" />
     </fragment>
     <fragment
         android:id="@+id/fragmentAdiconarBanco"
@@ -78,6 +75,9 @@
         <action
             android:id="@+id/action_fragmentvoltarLista"
             app:destination="@id/fragmentListaDeContas" />
+        <action
+            android:id="@+id/action_BancoParaEditar"
+            app:destination="@id/fragmentEditarConta" />
     </fragment>
     <fragment
         android:id="@+id/fragmentTranzacao"
@@ -101,6 +101,26 @@
             app:argType="string" />
         <action
             android:id="@+id/action_fragmentvoltardeCorretoraParaLista"
+            app:destination="@id/fragmentListaDeContas" />
+        <action
+            android:id="@+id/action_CorretoraParaEditar"
+            app:destination="@id/fragmentEditarConta" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentEditarConta"
+        android:name="com.schutell.situaofinanceira.fragments.FragmentEditarConta"
+        android:label="FragmentEditarConta" >
+        <argument
+            android:name="bancoId"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_editarParaBanco"
+            app:destination="@id/fragmentBanco" />
+        <action
+            android:id="@+id/action_EditarParaCorretora"
+            app:destination="@id/fragmentCorretora" />
+        <action
+            android:id="@+id/action_editarParaLista"
             app:destination="@id/fragmentListaDeContas" />
     </fragment>
 </navigation>

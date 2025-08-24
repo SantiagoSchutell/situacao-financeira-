@@ -76,7 +76,8 @@
             android:layout_height="wrap_content"
             android:text="@string/tipo_contacorretne"
             android:textColor="@color/txt"
-            android:textColorHint="@color/txt" />
+            android:textColorHint="@color/txt"
+            android:tag="CONTA_CORRENTE"/>
 
         <RadioButton
             android:id="@+id/radioBtnInvestimentos"
@@ -84,7 +85,8 @@
             android:layout_height="wrap_content"
             android:text="@string/tipo_corretora"
             android:textColor="@color/txt"
-            android:textColorHint="@color/txt" />
+            android:textColorHint="@color/txt"
+            android:tag="CONTA_INVESTIMENTOS"/>
 
         <RadioButton
             android:id="@+id/radioBtnCrypto"
@@ -98,7 +100,8 @@
             android:text="@string/tipo_crypto"
             android:textColor="@color/txt"
             android:textColorHighlight="@color/txt"
-            android:textColorHint="@color/txt" />
+            android:textColorHint="@color/txt"
+            android:tag="CONTA_CRYPTOMOEDAS"/>
     </RadioGroup>
 
     <ImageView

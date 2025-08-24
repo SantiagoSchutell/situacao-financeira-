@@ -1,6 +1,7 @@
 package com.schutell.situaofinanceira.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -13,10 +14,13 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
+import com.schutell.situaofinanceira.Banco
 import com.schutell.situaofinanceira.R
 import com.schutell.situaofinanceira.databinding.ActivityBancoBinding
 import java.text.NumberFormat
@@ -31,9 +35,14 @@ class FragmentBanco : Fragment() {
     private val data by lazy {
         FirebaseFirestore.getInstance()
     }
+    private val storage by lazy {
+        FirebaseStorage.getInstance()
+    }
     private val user by lazy {
         FirebaseAuth.getInstance()
     }
+
+   private val userID = user.currentUser?.uid.toString()
 
 
     override fun onCreateView(
@@ -50,7 +59,6 @@ class FragmentBanco : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val idDaConta = args.bancoId
-
         carregarDadosConta(idDaConta)
         inicializarMenuItems()
 
@@ -116,31 +124,41 @@ class FragmentBanco : Fragment() {
                     menu: Menu,
                     menuInflater: MenuInflater
                 ) {
+                    menu.clear()
                     menuInflater.inflate(R.menu.menucontas, menu)
+
                 }
 
                 override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                     when (menuItem.itemId) {
                         R.id.item_editar -> {
-                            Toast.makeText(
-                                requireContext(),
-                                "Clicado em editar",
-                                Toast.LENGTH_SHORT
-                            ).show()
+
+                            findNavController().navigate(FragmentBancoDirections.actionBancoParaEditar(args.bancoId))
+                            return true
                         }
 
                         R.id.item_excluir -> {
-                            Toast.makeText(
-                                requireContext(),
-                                "Clicado em Excluir",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            val imageStorage = storage.reference.child("$userID/bank_logo_${args.bancoId}.jpg")
+                            imageStorage.delete()
+                                .addOnSuccessListener {
+                                    data.collection("usuarios")
+                                        .document(user.uid.toString())
+                                        .collection("bancos")
+                                        .document(args.bancoId)
+                                        .delete().addOnSuccessListener {ok->
+                                            findNavController().navigate(FragmentBancoDirections.actionFragmentvoltarLista())
+                                            Toast.makeText(requireContext(), "Sucesso ao remover conta!", Toast.LENGTH_SHORT).show()
+                                        }
+                                }
+                            return true
                         }
                     }
-                    return true
+                    return false
                 }
 
-            }
+            },
+            viewLifecycleOwner,
+            Lifecycle.State.RESUMED
         )
     }
 
@@ -154,8 +172,6 @@ class FragmentBanco : Fragment() {
 
         docRef.addOnSuccessListener { dados ->
             if (dados != null && dados.exists()) {
-                val tipoDaConta = dados.getDouble("tipoDeConta")
-
                 val nome = dados.get("nome")
                 val credito = dados.getDouble("credito")
                 val debito = dados.getDouble("debito")

@@ -23,6 +23,8 @@ import com.schutell.situaofinanceira.R
 import com.schutell.situaofinanceira.databinding.ActivityAdicionarbancoBinding
 import java.io.ByteArrayOutputStream
 import androidx.core.graphics.createBitmap
+import androidx.navigation.fragment.navArgs
+import kotlin.getValue
 
 class FragmentAdiconarBanco : Fragment() {
     private var _binding: ActivityAdicionarbancoBinding? = null
@@ -36,6 +38,7 @@ class FragmentAdiconarBanco : Fragment() {
     private val storage by lazy {
         FirebaseStorage.getInstance()
     }
+    private val args: FragmentBancoArgs by navArgs()
     private var uriDaImagemSelecionada: Uri? = null
 
     private var uriIcoStorege: Uri? = null
@@ -56,6 +59,7 @@ class FragmentAdiconarBanco : Fragment() {
         }
     private var permissaoGaleria = false
     private var permissaoCamera = false
+
 
 
 
@@ -98,7 +102,7 @@ class FragmentAdiconarBanco : Fragment() {
 
         val permissoesNegadas = mutableListOf<String>()
         if(!permissaoCamera)permissoesNegadas.add(Manifest.permission.CAMERA)
-        if (permissaoGaleria)permissoesNegadas.add(Manifest.permission.READ_MEDIA_IMAGES)
+        if (!permissaoGaleria)permissoesNegadas.add(Manifest.permission.READ_MEDIA_IMAGES)
 
         if (permissoesNegadas.isNotEmpty()){
             val gerenciadorDePermissoes =registerForActivityResult(
@@ -146,8 +150,19 @@ class FragmentAdiconarBanco : Fragment() {
         }
 
 
+
+        //GERA um ID aleatorio bara a conta
+        val idBanco = data.collection("usuarios")
+            .document(userID)
+            .collection("bancos")
+            .document().id
+
         val nomeDoBanco = binding.editTextNomeConta.text.toString()
-        val tipo = binding.radioGroup.checkedRadioButtonId
+        val checkedId = binding.radioGroup.checkedRadioButtonId
+        val radioButtonSelecionado = binding.root.findViewById<android.widget.RadioButton>(checkedId)
+        val tipoDeContaTag = radioButtonSelecionado.tag.toString()
+
+
 
 
         var icoUri = uriDaImagemSelecionada ?: run {
@@ -156,44 +171,44 @@ class FragmentAdiconarBanco : Fragment() {
             Uri.parse("android.resource://${nomeDoPacote}/$drawableId")
         }
 
-        val refDoArquivo = storage.reference.child(userID).child("bank_logo\\$nomeDoBanco.jpg")
+        val refDoArquivo = storage.reference.child(userID).child("bank_logo_${idBanco.toString()}.jpg")
 
         if (uriDaImagemSelecionada != null) {
             refDoArquivo.putFile(uriDaImagemSelecionada!!).addOnSuccessListener { take ->
                 take.storage.downloadUrl.addOnSuccessListener { urlDaIamgem ->
-                    salvarNoFirebase(nomeDoBanco, tipo, urlDaIamgem)
+                    salvarNoFirebase(idBanco, nomeDoBanco, tipoDeContaTag, urlDaIamgem)
                 }
             }
         } else {
             val imagemPadrao = compactarImagem(R.drawable.bankimamge)
             refDoArquivo.putBytes(imagemPadrao).addOnSuccessListener { take ->
                 take.storage.downloadUrl.addOnSuccessListener { urlDaIamgem ->
-                    salvarNoFirebase(nomeDoBanco, tipo, urlDaIamgem)
+                    salvarNoFirebase(idBanco, nomeDoBanco, tipoDeContaTag, urlDaIamgem)
                 }
             }
         }
     }
 
-    private fun salvarNoFirebase(nomeDoBanco: String, tipoConta: Int, imageUrl: Uri) {
+    private fun salvarNoFirebase(idBanco: String, nomeDoBanco: String, tipoDeContaTag: String, imageUrl: Uri) {
         var userID = autenticar.currentUser?.uid.toString()
 
-        val dados = when (tipoConta) {
+        val dados = when (tipoDeContaTag) {
 
             //banco
-            R.id.radioBtnCorrente -> mapOf(
+            "CONTA_CORRENTE" -> mapOf(
                 "nome" to nomeDoBanco,
                 "imageUrl" to imageUrl.toString(),
                 "credito" to 0,
                 "debito" to 0,
-                "tipoDeConta" to tipoConta
+                "tipoDeConta" to tipoDeContaTag
             )
 
 
             //Corretora
-            R.id.radioBtnInvestimentos -> {
+            "CONTA_INVESTIMENTOS" -> {
                 mapOf(
                     "nome" to nomeDoBanco,
-                    "tipoDeConta" to tipoConta,
+                    "tipoDeConta" to tipoDeContaTag,
                     "imageUrl" to imageUrl.toString(),
                     "acoes" to 0,
                     "fiis" to 0,
@@ -212,7 +227,7 @@ class FragmentAdiconarBanco : Fragment() {
             data.collection("usuarios")
                 .document(userID)
                 .collection("bancos")
-                .document(nomeDoBanco)
+                .document(idBanco)
                 .set(dados)
                 .addOnSuccessListener {
                     Toast.makeText(requireContext(), "Sucesso ao Adicionar!", Toast.LENGTH_SHORT)

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/secundaria">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputNome"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:textColorHint="@color/txt"
+        app:boxStrokeColor="@color/black"
+        app:boxStrokeErrorColor="@color/design_default_color_error"
+        app:cursorErrorColor="@color/design_default_color_error"
+        app:errorIconTint="@color/design_default_color_error"
+        app:errorTextColor="@color/design_default_color_error"
+        app:hintTextColor="@color/txt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageContaLogo"
+        app:placeholderTextColor="@color/textoPrincipal">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textInputEditNome"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/txt"
+            android:textColorHint="@color/txt" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <ImageView
+        android:id="@+id/imageContaLogo"
+        android:layout_width="129dp"
+        android:layout_height="134dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarEditar"
+        app:srcCompat="@android:drawable/ic_menu_gallery" />
+
+    <Button
+        android:id="@+id/btnSalvarEdicao"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:backgroundTint="@color/acento"
+        android:text="Salvar"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputNome" />
+
+    <include
+        android:id="@+id/toolbarEditar"
+        layout="@layout/toolbar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="74dp"
+        android:layout_height="82dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageContaLogo"
+        app:layout_constraintEnd_toEndOf="@+id/imageContaLogo"
+        app:layout_constraintTop_toTopOf="@+id/imageContaLogo"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@android:drawable/ic_menu_edit" />
+</androidx.constraintlayout.widget.ConstraintLayout>

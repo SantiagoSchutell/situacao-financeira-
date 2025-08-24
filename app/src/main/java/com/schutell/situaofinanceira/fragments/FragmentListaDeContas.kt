@@ -5,14 +5,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Adapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.schutell.situaofinanceira.Banco
@@ -53,9 +49,6 @@ class FragmentListaDeContas: Fragment(), OnContaClicada {
 
     override fun onResume() {
         super.onResume()
-
-
-
         val banco  = data
             .collection("usuarios")
             .document(user.uid.toString())
@@ -67,10 +60,11 @@ class FragmentListaDeContas: Fragment(), OnContaClicada {
                 val lista = mutableListOf<Banco>()
 
                 for(document in contaAdicionada){
-                    val nome = document.id
+                    val idBanco = document.id
+                    val nome = document.getString("nome").toString()
                     val urldaImagem = document.getString("imageUrl")
 
-                    lista.add(Banco(nome,urldaImagem))
+                    lista.add(Banco(idBanco, nome,urldaImagem))
                 }
 
                 adapter = ContaAdapter(lista, this)
@@ -84,9 +78,9 @@ class FragmentListaDeContas: Fragment(), OnContaClicada {
 
         binding.fabAddConta.setOnClickListener {
             if (FirebaseAuth.getInstance().currentUser != null){
-                findNavController().navigate(R.id.action_fragment_AddConta)
+                findNavController().navigate(FragmentListaDeContasDirections.actionFragmentAddConta())
             }else{
-                findNavController().navigate(R.id.action_fragmentListaDeContas_to_fragmentLogin)
+                findNavController().navigate(FragmentListaDeContasDirections.actionFragmentListaDeContasToFragmentLogin())
             }
         }
 
@@ -95,31 +89,29 @@ class FragmentListaDeContas: Fragment(), OnContaClicada {
 
     }
 
-    override fun OnContaClicada(nomeDoBanco: String) {
-
-
+    override fun OnContaClicada(idbanco: String) {
         val docRef = data
             .collection("usuarios")
             .document(user.uid.toString())
             .collection("bancos")
-            .document(nomeDoBanco)
+            .document(idbanco)
             .get()
 
         docRef.addOnSuccessListener { dados ->
             if (dados != null && dados.exists()) {
-                val tipoDaConta = dados.getLong("tipoDeConta")?.toInt()
+                val tipoDaConta = dados.getString("tipoDeConta")
 
 
                 when (tipoDaConta) {
-                    R.id.radioBtnCorrente -> {
+                    "CONTA_CORRENTE" -> {
                         val acao =
-                            FragmentListaDeContasDirections.actionFragmentEntrarNoBanco(nomeDoBanco)
+                            FragmentListaDeContasDirections.actionFragmentEntrarNoBanco(idbanco)
                         findNavController().navigate(acao)
                     }
 
-                    R.id.radioBtnInvestimentos -> {
+                    "CONTA_INVESTIMENTOS" -> {
                         val acao = FragmentListaDeContasDirections.actionFragmentEntrarCorretora(
-                            nomeDoBanco
+                            idbanco
                         )
                         findNavController().navigate(acao)
                     }
