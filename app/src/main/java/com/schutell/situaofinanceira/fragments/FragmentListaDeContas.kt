@@ -5,10 +5,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.schutell.situaofinanceira.Banco
@@ -117,24 +117,17 @@ class FragmentListaDeContas: Fragment(), OnContaClicada {
                     }
 
                     else -> {
-                        Toast.makeText(
-                            requireContext(),
-                            "Tipo de conta desconhecido!",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        Snackbar.make(requireView(), "Tipo de conta desconhecido!", Snackbar.LENGTH_SHORT).show()
+
                     }
                 }
             } else {
-                Toast.makeText(requireContext(), "Documento não encontrado.", Toast.LENGTH_SHORT)
-                    .show()
+                Snackbar.make(requireView(), "Documento não encontrado.", Snackbar.LENGTH_SHORT).show()
+
             }
         }
             .addOnFailureListener { exception ->
-                Toast.makeText(
-                    requireContext(),
-                    "Erro ao ler dados: ${exception.localizedMessage}",
-                    Toast.LENGTH_SHORT
-                ).show()
+                Snackbar.make(requireView(), "Erro ao ler dados: ${exception.localizedMessage}", Snackbar.LENGTH_SHORT).show()
             }
     }
 }

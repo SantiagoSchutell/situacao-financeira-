@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.schutell.situaofinanceira.R
 import com.schutell.situaofinanceira.databinding.ActivityLoginBinding
@@ -27,7 +27,7 @@ class FragmentLogin: Fragment() {
             findNavController().navigate(R.id.action_fragmentLogin_to_fragmentHome)
         } else{
             activity?.runOnUiThread {
-                Toast.makeText(requireContext(), "Faça login antes de continuar", Toast.LENGTH_SHORT).show()
+                Snackbar.make(requireView(), "Faça login antes de continuar", Snackbar.LENGTH_SHORT).show()
             }
         }
     }
@@ -60,7 +60,7 @@ class FragmentLogin: Fragment() {
 
 
             if (email.isEmpty() || senha.isEmpty()){
-                Toast.makeText(requireContext(), "O email e senha não podem estar vazio!", Toast.LENGTH_SHORT).show()
+                Snackbar.make(requireView(), "O email e senha não podem estar vazio!", Snackbar.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -68,11 +68,10 @@ class FragmentLogin: Fragment() {
                 .addOnCompleteListener  { sucesso->
                     activity?.runOnUiThread {
                         if (sucesso.isSuccessful){
-                            Toast.makeText(requireContext(), "Sucesso ao entrar", Toast.LENGTH_SHORT).show()
+                            Snackbar.make(requireView(), "Sucesso ao entrar", Snackbar.LENGTH_SHORT).show()
                             verificarLogin()
                         }else{
-                            Toast.makeText(requireContext(), "Erro ao entrar! ${sucesso.exception?.message}", Toast.LENGTH_SHORT).show()
-
+                            Snackbar.make(requireView(), "Erro ao entrar! ${sucesso.exception?.message}", Snackbar.LENGTH_SHORT).show()
                         }
                     }
                 }

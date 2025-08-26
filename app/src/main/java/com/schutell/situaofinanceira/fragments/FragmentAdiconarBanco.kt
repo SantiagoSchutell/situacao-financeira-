@@ -11,7 +11,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -24,6 +23,7 @@ import com.schutell.situaofinanceira.databinding.ActivityAdicionarbancoBinding
 import java.io.ByteArrayOutputStream
 import androidx.core.graphics.createBitmap
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.snackbar.Snackbar
 import kotlin.getValue
 
 class FragmentAdiconarBanco : Fragment() {
@@ -121,21 +121,17 @@ class FragmentAdiconarBanco : Fragment() {
 
 
         if (binding.editTextNomeConta.text.isNullOrBlank()) {
-            Toast.makeText(
-                requireContext(),
-                "Por favor, insira o nome da conta.",
-                Toast.LENGTH_SHORT
-            ).show()
+
+            Snackbar.make(requireView(), "Por favor, insira o nome da conta.", Snackbar.LENGTH_SHORT).show()
+
             return
         }
 
 
         if (binding.radioGroup.checkedRadioButtonId == -1) {
-            Toast.makeText(
-                requireContext(),
-                "Por favor, selecione o tipo de conta.",
-                Toast.LENGTH_SHORT
-            ).show()
+
+            Snackbar.make(requireView(), "Por favor, selecione o tipo de conta.", Snackbar.LENGTH_SHORT).show()
+
             return
         }
 
@@ -143,8 +139,9 @@ class FragmentAdiconarBanco : Fragment() {
         val userID = autenticar.currentUser?.uid
 
         if (userID == null) {
-            Toast.makeText(requireContext(), "Erro: Usuário não autenticado.", Toast.LENGTH_SHORT)
-                .show()
+
+            Snackbar.make(requireView(), "Erro: Usuário não autenticado.", Snackbar.LENGTH_SHORT).show()
+
             findNavController().navigate(R.id.action_fragment_login)
             return
         }
@@ -230,16 +227,14 @@ class FragmentAdiconarBanco : Fragment() {
                 .document(idBanco)
                 .set(dados)
                 .addOnSuccessListener {
-                    Toast.makeText(requireContext(), "Sucesso ao Adicionar!", Toast.LENGTH_SHORT)
-                        .show()
+
+                    Snackbar.make(requireView(), "Sucesso ao Adicionar!", Snackbar.LENGTH_SHORT).show()
+
                     findNavController().navigate(R.id.action_fragmen_para_contasList)
                 }
                 .addOnFailureListener { erro ->
-                    Toast.makeText(
-                        requireContext(),
-                        "Erro ao salvar! ${erro.message}",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Snackbar.make(requireView(), "Erro ao salvar", Snackbar.LENGTH_SHORT).show()
+
                 }
                 .addOnFailureListener {
                     Log.i("app", "ERRO ao salvar dados")

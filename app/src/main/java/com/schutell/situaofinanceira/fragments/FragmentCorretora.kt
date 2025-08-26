@@ -9,13 +9,14 @@ import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
@@ -199,11 +200,8 @@ class FragmentCorretora :  Fragment() {
                 val proventos = dados.getDouble("proventos") ?: 0.0
                 val contaDeInvestimentos = dados.getDouble("contaDeInvestimentos") ?: 0.0
 
-
                 val totalValor =
                     acoes + fiis + rendaFixa+ proventos + contaDeInvestimentos
-
-
 
                 binding.textSaldoTotalInvestido.text = formatarParaDinheiro(totalValor)
                 binding.textAcoes.text = formatarParaDinheiro(acoes)
@@ -272,14 +270,10 @@ class FragmentCorretora :  Fragment() {
                         }
 
                         R.id.item_excluir -> {
-
-                            val getName = data.collection("usuarios")
-                                .document(user.uid.toString())
-                                .collection("bancos")
-                                .document(args.bancoId)
-                                .get().addOnSuccessListener { nameGet->
-                                    val nomeDoBanco = nameGet.get("nome")
-                                    val imageStorage = storage.reference.child("$userID/bank_logo_$nomeDoBanco.jpg")
+                            val caixa = AlertDialog.Builder(requireContext())
+                            caixa.setMessage("Você realmente deseja excluir essa conta?")
+                                .setPositiveButton("Sim"){dialog, id ->
+                                    val imageStorage = storage.reference.child("$userID/bank_logo_${args.bancoId}.jpg")
                                     imageStorage.delete()
                                         .addOnSuccessListener {
                                             data.collection("usuarios")
@@ -288,13 +282,13 @@ class FragmentCorretora :  Fragment() {
                                                 .document(args.bancoId)
                                                 .delete().addOnSuccessListener {ok->
                                                     findNavController().navigate(FragmentBancoDirections.actionFragmentvoltarLista())
-                                                    Toast.makeText(requireContext(), "Sucesso ao remover conta!", Toast.LENGTH_SHORT).show()
+                                                    Snackbar.make(requireView(), "Sucesso ao remover conta!", Snackbar.LENGTH_SHORT).show()
 
                                                 }
                                         }
-                                }
-
-
+                                }.setNegativeButton("Cancelar"){dialog, id -> }
+                            caixa.create()
+                            caixa.show()
                             return true
                         }
                     }

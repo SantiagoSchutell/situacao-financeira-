@@ -6,10 +6,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.schutell.situaofinanceira.R
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
@@ -48,11 +48,12 @@ class FragmentCriarConta: Fragment() {
 
 
             if (email.isEmpty() || senha.isEmpty()){
-                Toast.makeText(requireContext(), "Você precisa digitar um email ou senha", Toast.LENGTH_SHORT).show()
+                Snackbar.make(requireView(), "Você precisa digitar um email ou senha", Snackbar.LENGTH_SHORT).show()
+
             } else{
                 autenticar.createUserWithEmailAndPassword(email, senha)
                     .addOnSuccessListener { sucesso->
-                        Toast.makeText(requireContext(), "Sucesso ao criar sua conta!", Toast.LENGTH_SHORT).show()
+                        Snackbar.make(requireView(), "Sucesso ao criar sua conta!", Snackbar.LENGTH_SHORT).show()
                         val userId = sucesso.user?.uid
                         if (userId != null) {
                             val dadosUsuario = hashMapOf(

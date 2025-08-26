@@ -1,20 +1,25 @@
 package com.schutell.situaofinanceira.fragments
 
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.createBitmap
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.schutell.situaofinanceira.R
 import com.schutell.situaofinanceira.databinding.ActivityEditarcontaBinding
+import java.io.ByteArrayOutputStream
 import kotlin.getValue
 
 class FragmentEditarConta : androidx.fragment.app.Fragment() {
@@ -32,25 +37,32 @@ class FragmentEditarConta : androidx.fragment.app.Fragment() {
         FirebaseAuth.getInstance()
     }
     private val args: FragmentBancoArgs by navArgs()
+    private lateinit var novoNome: String
     private lateinit var nomeDoBanco: String
+    private lateinit var tipoDaConta: String
+    private lateinit var idBanco: String
     private var imagemUrl: Uri? = null
 
     private val selectImageLauncher =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-
             if (uri != null) {
                 imagemUrl = uri
                 binding.imageContaLogo.setImageURI(imagemUrl)
 
             } else {
-                val nomeDoPacote = requireContext().packageName
-                val drawableId = R.drawable.bankimamge
-                val uriPadrao = Uri.parse("android.resource://${nomeDoPacote}/$drawableId")
+                val uriPadrao = Uri.parse("android.resource://${requireContext().packageName}/${R.drawable.bankimamge}")
                 imagemUrl = uriPadrao
                 binding.imageContaLogo.setImageURI(imagemUrl)
             }
         }
 
+    override fun onStart() {
+        super.onStart()
+        if (user.currentUser == null){
+            Snackbar.make(requireView(), "Faça login antes de continuar.", Snackbar.LENGTH_SHORT).show()
+            findNavController().navigate(FragmentEditarContaDirections.actionEditarParaLogin())
+        }
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -74,46 +86,87 @@ class FragmentEditarConta : androidx.fragment.app.Fragment() {
         binding.btnSalvarEdicao.setOnClickListener {
 
             if (binding.textInputEditNome.text != null){
-                 nomeDoBanco = binding.textInputEditNome.text.toString()
+                 novoNome = binding.textInputEditNome.text.toString()
             }
-            salvarEdicoes(nomeDoBanco, imagemUrl.toString())
+            salvarEdicoes(novoNome)
         }
 
     }
 
-    private fun salvarEdicoes(nome: String, imagem: String) {
-        val docRef = data
-            .collection("usuarios")
+    private fun salvarEdicoes(nome: String) {
+        val nomeParaSalvar = if (nome.isNotBlank()) nome else nomeDoBanco
+        val dados = mapOf(
+            "nome" to nomeParaSalvar
+        )
+
+        data.collection("usuarios")
             .document(user.uid.toString())
             .collection("bancos")
             .document(args.bancoId)
-            .get().addOnSuccessListener { dados->
-                val tipo = dados.get("tipoDeConta")
-                if (nome.isNotEmpty()){
-                    val dados = mapOf(
-                        "imageUrl" to imagem,
-                        "nome" to nome
-                    )
-
-                    val docRef = data
-                        .collection("usuarios")
-                        .document(user.uid.toString())
-                        .collection("bancos")
-                        .document(args.bancoId)
-                        .update(dados).addOnSuccessListener {
-                           if (tipo == "CONTA_CORRENTE"){
-                               findNavController().navigate(FragmentEditarContaDirections.actionEditarParaBanco(args.bancoId))
-                           } else{
-                               findNavController().navigate(FragmentEditarContaDirections.actionEditarParaCorretora(args.bancoId))
-                           }
+            .update(dados).addOnSuccessListener {
+                salvarImagem(idBanco){sucesso ->
+                    if (sucesso){
+                        Snackbar.make(requireView(), "Conta atualizada com sucesso!", Snackbar.LENGTH_SHORT).show()
+                        if (tipoDaConta == "CONTA_CORRENTE"){
+                            findNavController().navigate(FragmentEditarContaDirections.actionEditarParaBanco(args.bancoId))
+                        }else{
+                            findNavController().navigate(FragmentEditarContaDirections.actionEditarParaCorretora(args.bancoId))
                         }
-                }
-                else{
-                    binding.textInputNome.error = "Digite o nome da conta!"
+                    }
                 }
             }
+            .addOnFailureListener {
+                Snackbar.make(requireView(), "Erro ao salvar o nome.", Snackbar.LENGTH_SHORT).show()
+            }
+    }
 
+    private fun salvarImagem(idBanco: String, onComplete: (sucesso: Boolean) -> Unit) {
+        val userId = user.currentUser?.uid
+        if (imagemUrl == null || userId == null) {
+            onComplete(true)
+            return
+        }
 
+        val storageRef = storage.reference.child("$userId/bank_logo_$idBanco.jpg")
+        storageRef.putFile(imagemUrl!!)
+            .continueWithTask { task ->
+                if (!task.isSuccessful) {
+                    task.exception?.let { throw it }
+                }
+                storageRef.downloadUrl
+            }
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val downloadUrl = task.result
+                    val dadosImagem = mapOf("imageUrl" to downloadUrl.toString())
+
+                    data.collection("usuarios").document(userId)
+                        .collection("bancos").document(idBanco)
+                        .update(dadosImagem)
+                        .addOnSuccessListener {
+                            onComplete(true)
+                        }
+                        .addOnFailureListener {
+                            onComplete(false)
+                        }
+                } else {
+                    onComplete(false)
+                }
+            }
+    }
+
+    private fun compactarImagem(drawableId: Int): ByteArray {
+        val drawable = ContextCompat.getDrawable(requireContext(), drawableId)
+            ?: throw IllegalArgumentException("Recurso de imagem não encontrado")
+
+        val bitmap = createBitmap(drawable.intrinsicWidth, drawable.intrinsicHeight)
+
+        val canvas = Canvas(bitmap)
+        drawable.setBounds(0, 0, canvas.width, canvas.height)
+        drawable.draw(canvas)
+        val baos = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.PNG, 90, baos)
+        return baos.toByteArray()
     }
 
 
@@ -139,14 +192,14 @@ class FragmentEditarConta : androidx.fragment.app.Fragment() {
 
         docRef.addOnSuccessListener { dados ->
             if (dados != null && dados.exists()) {
-                val tipoDaConta = dados.getString("tipoDeConta")
+                tipoDaConta = dados.getString("tipoDeConta").toString()
+                nomeDoBanco = dados.get("nome").toString()
+                idBanco = dados.id
 
-                val nome = dados.get("nome")
-                binding.textInputNome.hint = nome.toString()
+                binding.textInputNome.hint = nomeDoBanco
 
             } else {
-                Toast.makeText(requireContext(), "Erro ao buscar dados!", Toast.LENGTH_SHORT)
-                    .show()
+                Snackbar.make(requireView(), "Erro ao buscar dados!", Snackbar.LENGTH_SHORT).show()
             }
 
         }

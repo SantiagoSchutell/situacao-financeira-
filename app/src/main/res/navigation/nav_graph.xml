@@ -30,6 +30,9 @@
         <action
             android:id="@+id/action_fragment_ContasList"
             app:destination="@id/fragmentListaDeContas" />
+        <action
+            android:id="@+id/action_fhomeToLogin"
+            app:destination="@id/fragmentLogin" />
     </fragment>
     <fragment
         android:id="@+id/fragmentListaDeContas"
@@ -122,5 +125,8 @@
         <action
             android:id="@+id/action_editarParaLista"
             app:destination="@id/fragmentListaDeContas" />
+        <action
+            android:id="@+id/action_editarParaLogin"
+            app:destination="@id/fragmentLogin" />
     </fragment>
 </navigation>

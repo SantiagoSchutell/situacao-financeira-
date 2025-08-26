@@ -1,5 +1,6 @@
 package com.schutell.situaofinanceira.fragments
 
+import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,13 +11,14 @@ import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
@@ -138,18 +140,25 @@ class FragmentBanco : Fragment() {
                         }
 
                         R.id.item_excluir -> {
-                            val imageStorage = storage.reference.child("$userID/bank_logo_${args.bancoId}.jpg")
-                            imageStorage.delete()
-                                .addOnSuccessListener {
-                                    data.collection("usuarios")
-                                        .document(user.uid.toString())
-                                        .collection("bancos")
-                                        .document(args.bancoId)
-                                        .delete().addOnSuccessListener {ok->
-                                            findNavController().navigate(FragmentBancoDirections.actionFragmentvoltarLista())
-                                            Toast.makeText(requireContext(), "Sucesso ao remover conta!", Toast.LENGTH_SHORT).show()
+                            val caixa = AlertDialog.Builder(requireContext())
+                            caixa.setMessage("Você realmente deseja excluir essa conta?")
+                                .setPositiveButton("Sim"){dialog, id ->
+                                    val imageStorage = storage.reference.child("$userID/bank_logo_${args.bancoId}.jpg")
+                                    imageStorage.delete()
+                                        .addOnSuccessListener {
+                                            data.collection("usuarios")
+                                                .document(user.uid.toString())
+                                                .collection("bancos")
+                                                .document(args.bancoId)
+                                                .delete().addOnSuccessListener {ok->
+                                                    findNavController().navigate(FragmentBancoDirections.actionFragmentvoltarLista())
+                                                    Snackbar.make(requireView(), "Sucesso ao remover conta!", Snackbar.LENGTH_SHORT).show()
+
+                                                }
                                         }
-                                }
+                                }.setNegativeButton("Cancelar"){dialog, id -> }
+                            caixa.create()
+                            caixa.show()
                             return true
                         }
                     }
@@ -195,8 +204,7 @@ class FragmentBanco : Fragment() {
 
                 }
             } else {
-                Toast.makeText(requireContext(), "Erro ao buscar dados!", Toast.LENGTH_SHORT)
-                    .show()
+                Snackbar.make(requireView(), "Erro ao buscar dados!", Snackbar.LENGTH_SHORT).show()
             }
 
         }

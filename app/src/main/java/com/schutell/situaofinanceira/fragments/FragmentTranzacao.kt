@@ -4,10 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.schutell.situaofinanceira.R
@@ -72,11 +72,7 @@ class FragmentTranzacao : Fragment() {
                             findNavController().navigate(action)
                         }
                         .addOnFailureListener {
-                            Toast.makeText(
-                                requireContext(),
-                                "Digite o valor da tranzação!",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            Snackbar.make(requireView(), "Digite o valor da tranzação!", Snackbar.LENGTH_SHORT).show()
                         }
                 }
             }
@@ -116,11 +112,7 @@ class FragmentTranzacao : Fragment() {
                             findNavController().navigate(action)
                         }
                         .addOnFailureListener {
-                            Toast.makeText(
-                                requireContext(),
-                                "Digite o valor da tranzação!",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            Snackbar.make(requireView(), "Digite o valor da tranzação!", Snackbar.LENGTH_SHORT).show()
                         }
                 }
             }

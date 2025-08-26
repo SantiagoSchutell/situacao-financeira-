@@ -97,11 +97,13 @@
             android:drawableTintMode="add"
             android:foregroundTint="@color/txt"
             android:shadowColor="@color/txt"
+            android:tag="CONTA_CRYPTOMOEDAS"
             android:text="@string/tipo_crypto"
             android:textColor="@color/txt"
             android:textColorHighlight="@color/txt"
             android:textColorHint="@color/txt"
-            android:tag="CONTA_CRYPTOMOEDAS"/>
+            android:visibility="invisible"
+            tools:visibility="visible" />
     </RadioGroup>
 
     <ImageView
