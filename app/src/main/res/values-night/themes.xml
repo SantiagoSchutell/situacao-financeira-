@@ -2,12 +2,19 @@
     <!-- Base application theme. -->
 
     <style name="Base.Theme.SituaçãoFinanceira" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/primaria</item>
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
-    </style>
-    <style name="ToolbarTitleStyle" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
-    <item name="android:textColor">@color/textoPrincipal</item>
+        <item name="colorPrimary">@color/secundaria</item>
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
+    <style name="Theme.SituaçãoFinanceira" parent="Base.Theme.SituaçãoFinanceira" />
+
+    <style name="ShapeAppearance.App.CircleImageView" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="ToolbarTitleStyle" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textColor">@color/textoPrincipal</item>
+    </style>
 </resources>

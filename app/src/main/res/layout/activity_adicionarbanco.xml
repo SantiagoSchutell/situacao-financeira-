@@ -74,10 +74,11 @@
             android:id="@+id/radioBtnCorrente"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:tag="CONTA_CORRENTE"
             android:text="@string/tipo_contacorretne"
             android:textColor="@color/txt"
             android:textColorHint="@color/txt"
-            android:tag="CONTA_CORRENTE"/>
+            app:buttonTint="@color/radio_button_tint"/>
 
         <RadioButton
             android:id="@+id/radioBtnInvestimentos"
@@ -86,7 +87,8 @@
             android:text="@string/tipo_corretora"
             android:textColor="@color/txt"
             android:textColorHint="@color/txt"
-            android:tag="CONTA_INVESTIMENTOS"/>
+            android:tag="CONTA_INVESTIMENTOS"
+            app:buttonTint="@color/radio_button_tint" />/>
 
         <RadioButton
             android:id="@+id/radioBtnCrypto"
@@ -103,7 +105,8 @@
             android:textColorHighlight="@color/txt"
             android:textColorHint="@color/txt"
             android:visibility="invisible"
-            tools:visibility="visible" />
+            tools:visibility="visible"
+            app:buttonTint="@color/radio_button_tint" />/>
     </RadioGroup>
 
     <ImageView
@@ -117,5 +120,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView8"
         app:srcCompat="@android:drawable/ic_menu_gallery" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

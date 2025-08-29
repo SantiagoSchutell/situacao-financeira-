@@ -3,9 +3,16 @@ package com.schutell.situaofinanceira.fragments
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
@@ -57,11 +64,11 @@ class FragmentHome : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-        binding.btnSair.setOnClickListener {
+     /*   binding.btnSair.setOnClickListener {
             FirebaseAuth.getInstance().signOut()
             verificarLogin()
-        }
-
+        }*/
+        inicializarMenuItems()
         calcularSaldosBancos()
 
         binding.btnContas.setOnClickListener {
@@ -109,5 +116,48 @@ class FragmentHome : Fragment() {
     private fun formatarParaDinheiro(valor: Double?): String {
         val formatar = NumberFormat.getCurrencyInstance(Locale("pt", "BR"))
         return formatar.format(valor).toString()
+    }
+
+    private fun inicializarMenuItems() {
+        //Tool bar
+        val toolBar = binding.toolBarHome.toolbarPrincipal
+        toolBar.setTitleTextAppearance(requireContext(), R.style.ToolbarTitleStyle)
+
+        (activity as AppCompatActivity).setSupportActionBar(toolBar)
+        (activity as AppCompatActivity).supportActionBar?.apply {
+
+        }
+        requireActivity().addMenuProvider(
+            object : MenuProvider {
+                override fun onCreateMenu(
+                    menu: Menu,
+                    menuInflater: MenuInflater
+                ) {
+                    menu.clear()
+                    menuInflater.inflate(R.menu.menu_home, menu)
+
+                }
+
+                override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                    when (menuItem.itemId) {
+                        R.id.item_deslogar ->{
+                            val caixa = AlertDialog.Builder(requireContext())
+                            caixa.setMessage("Você realmente deseja sair da sua conta?")
+                                .setPositiveButton("Sim"){dialog, id ->
+                                    FirebaseAuth.getInstance().signOut()
+                                    findNavController().navigate(FragmentHomeDirections.actionFhomeToLogin())
+                                }.setNegativeButton("Cancelar"){dialog, id -> }
+                            caixa.create()
+                            caixa.show()
+                            return true
+                        }
+                    }
+                    return false
+                }
+
+            },
+            viewLifecycleOwner,
+            Lifecycle.State.RESUMED
+        )
     }
 }

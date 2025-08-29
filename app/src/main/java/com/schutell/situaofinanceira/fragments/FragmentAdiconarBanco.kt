@@ -10,6 +10,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -40,8 +42,6 @@ class FragmentAdiconarBanco : Fragment() {
     }
     private val args: FragmentBancoArgs by navArgs()
     private var uriDaImagemSelecionada: Uri? = null
-
-    private var uriIcoStorege: Uri? = null
     private val selectImageLauncher =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
 
@@ -118,7 +118,9 @@ class FragmentAdiconarBanco : Fragment() {
     }
 
     private fun adicionarNovaConta() {
-
+        binding.progressBar.visibility = VISIBLE
+        binding.btnAdicionar.visibility = INVISIBLE
+        binding.radioGroup.visibility = INVISIBLE
 
         if (binding.editTextNomeConta.text.isNullOrBlank()) {
 
@@ -227,16 +229,28 @@ class FragmentAdiconarBanco : Fragment() {
                 .document(idBanco)
                 .set(dados)
                 .addOnSuccessListener {
+                    binding.progressBar.visibility = INVISIBLE
+                    binding.btnAdicionar.visibility = VISIBLE
+                    binding.radioGroup.visibility = VISIBLE
+
 
                     Snackbar.make(requireView(), "Sucesso ao Adicionar!", Snackbar.LENGTH_SHORT).show()
 
                     findNavController().navigate(R.id.action_fragmen_para_contasList)
                 }
                 .addOnFailureListener { erro ->
+                    binding.progressBar.visibility = INVISIBLE
+                    binding.btnAdicionar.visibility = VISIBLE
+                    binding.radioGroup.visibility = VISIBLE
+
                     Snackbar.make(requireView(), "Erro ao salvar", Snackbar.LENGTH_SHORT).show()
 
                 }
                 .addOnFailureListener {
+                    binding.progressBar.visibility = INVISIBLE
+                    binding.btnAdicionar.visibility = VISIBLE
+                    binding.radioGroup.visibility = VISIBLE
+
                     Log.i("app", "ERRO ao salvar dados")
                 }
         }

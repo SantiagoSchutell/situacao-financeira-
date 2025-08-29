@@ -6,6 +6,8 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -121,6 +123,9 @@ class FragmentEditarConta : androidx.fragment.app.Fragment() {
     }
 
     private fun salvarImagem(idBanco: String, onComplete: (sucesso: Boolean) -> Unit) {
+        binding.progressBarHome.visibility = VISIBLE
+        binding.btnSalvarEdicao.visibility = INVISIBLE
+
         val userId = user.currentUser?.uid
         if (imagemUrl == null || userId == null) {
             onComplete(true)
@@ -140,6 +145,9 @@ class FragmentEditarConta : androidx.fragment.app.Fragment() {
                     val downloadUrl = task.result
                     val dadosImagem = mapOf("imageUrl" to downloadUrl.toString())
 
+                    binding.progressBarHome.visibility = INVISIBLE
+                    binding.btnSalvarEdicao.visibility = VISIBLE
+
                     data.collection("usuarios").document(userId)
                         .collection("bancos").document(idBanco)
                         .update(dadosImagem)
@@ -154,21 +162,6 @@ class FragmentEditarConta : androidx.fragment.app.Fragment() {
                 }
             }
     }
-
-    private fun compactarImagem(drawableId: Int): ByteArray {
-        val drawable = ContextCompat.getDrawable(requireContext(), drawableId)
-            ?: throw IllegalArgumentException("Recurso de imagem não encontrado")
-
-        val bitmap = createBitmap(drawable.intrinsicWidth, drawable.intrinsicHeight)
-
-        val canvas = Canvas(bitmap)
-        drawable.setBounds(0, 0, canvas.width, canvas.height)
-        drawable.draw(canvas)
-        val baos = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.PNG, 90, baos)
-        return baos.toByteArray()
-    }
-
 
     private fun iniciarToolBar() {
 

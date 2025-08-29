@@ -10,6 +10,6 @@
     <color name="textoPrincipal">#1c2b41</color>
     <color name="txt">#6a7b95</color>  <!--Para textos secundarios-->
     <color name="acento">#4a74c9</color> <!--botoes e etc-->
-
+    <color name="corMarcada">#5568F8</color> <color name="corDesMarcada">#6699f0</color> ...
 
 </resources>

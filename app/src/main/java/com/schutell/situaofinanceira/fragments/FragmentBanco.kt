@@ -140,12 +140,18 @@ class FragmentBanco : Fragment() {
                         }
 
                         R.id.item_excluir -> {
+                            binding.progressBarBanco.visibility = VISIBLE
+                            binding.fabAddTranzacao.visibility = INVISIBLE
+
                             val caixa = AlertDialog.Builder(requireContext())
                             caixa.setMessage("Você realmente deseja excluir essa conta?")
                                 .setPositiveButton("Sim"){dialog, id ->
                                     val imageStorage = storage.reference.child("$userID/bank_logo_${args.bancoId}.jpg")
                                     imageStorage.delete()
                                         .addOnSuccessListener {
+                                            binding.progressBarBanco.visibility = INVISIBLE
+                                            binding.fabAddTranzacao.visibility = VISIBLE
+
                                             data.collection("usuarios")
                                                 .document(user.uid.toString())
                                                 .collection("bancos")
@@ -224,6 +230,5 @@ class FragmentBanco : Fragment() {
 
         docRef.update(tipo, valor)
     }
-
 
 }

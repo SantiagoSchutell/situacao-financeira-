@@ -270,18 +270,22 @@ class FragmentCorretora :  Fragment() {
                         }
 
                         R.id.item_excluir -> {
+                            binding.progressBarCorretora.visibility = VISIBLE
+
                             val caixa = AlertDialog.Builder(requireContext())
                             caixa.setMessage("Você realmente deseja excluir essa conta?")
                                 .setPositiveButton("Sim"){dialog, id ->
                                     val imageStorage = storage.reference.child("$userID/bank_logo_${args.bancoId}.jpg")
                                     imageStorage.delete()
                                         .addOnSuccessListener {
+                                            binding.progressBarCorretora.visibility = INVISIBLE
                                             data.collection("usuarios")
                                                 .document(user.uid.toString())
                                                 .collection("bancos")
                                                 .document(args.bancoId)
                                                 .delete().addOnSuccessListener {ok->
-                                                    findNavController().navigate(FragmentBancoDirections.actionFragmentvoltarLista())
+                                                    findNavController().navigate(
+                                                        FragmentCorretoraDirections.actionFragmentvoltardeCorretoraParaLista())
                                                     Snackbar.make(requireView(), "Sucesso ao remover conta!", Snackbar.LENGTH_SHORT).show()
 
                                                 }
